@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SQL Query Generator</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 0;
+        }
+
+        .container {
+            width: 95%; /* use almost full screen */
+            margin: 20px auto;
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        h1 {
+            text-align: center;
+            color: #333;
+        }
+
+        label {
+            display: block;
+            margin-top: 20px;
+            font-weight: bold;
+        }
+
+        input[type="text"],
+        textarea {
+            width: 100%;
+            padding: 10px;
+            margin-top: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            font-size: 16px;
+            box-sizing: border-box;
+        }
+
+        textarea {
+            resize: vertical;
+        }
+
+        input[type="submit"] {
+            display: inline-block;
+            padding: 10px 20px;
+            margin-top: 20px;
+            background-color: #28a745;
+            color: #fff;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+        }
+
+        input[type="submit"]:hover {
+            background-color: #218838;
+        }
+
+        pre {
+            background-color: #f8f9fa;
+            padding: 15px;
+            border-radius: 5px;
+            border: 1px solid #ccc;
+        }
+
+        /* Table scroll fix */
+        .table-container {
+            width: 100%;
+            overflow-x: auto;
+        }
+
+        table {
+            min-width: 1000px; /* force horizontal scroll if needed */
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+
+        th,
+        td {
+            border: 1px solid #ccc;
+            padding: 10px;
+            text-align: left;
+            font-size: 15px; /* slightly smaller to fit more */
+            white-space: nowrap; /* prevent text wrapping */
+        }
+
+        th {
+            background-color: #f4f4f4;
+        }
+
+        .error {
+            color: red;
+            font-weight: bold;
+            margin-top: 20px;
+        }
+
+        .no-data {
+            color: #777;
+            margin-top: 20px;
+            text-align: center;
+        }
+
+        .footer {
+            text-align: center;
+            margin-top: 50px;
+            color: #666;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <h1>Natural Language to SQL Query</h1>
+        <form method="post" action="/">
+            <label for="query">Enter your query:</label>
+            <input type="text" id="query" name="query" value="{{ natural_language_query }}" placeholder="E.g., Show all employees earning over $100,000" required>
+            <input type="submit" name="action" value="Generate Query">
+            {% if sql_query %}
+                <label for="sql_query">Generated SQL Query (you can edit):</label>
+                <textarea id="sql_query" name="sql_query" rows="5">{{ sql_query }}</textarea>
+                <input type="submit" name="action" value="Execute Query">
+            {% endif %}
+        </form>
+
+        {% if error %}
+            <p class="error">{{ error }}</p>
+        {% endif %}
+
+        {% if sql_query and not error %}
+            <h2>Generated SQL Query:</h2>
+            <pre>{{ sql_query }}</pre>
+        {% endif %}
+
+        {% if result %}
+            {% if row_count %}
+                <p>{{ row_count }} rows selected.</p>
+            {% endif %}
+            <h2>Query Result:</h2>
+            <div class="table-container">
+                <table>
+                    <thead>
+                        <tr>
+                            {% for column in result[0] %}
+                                <th>{{ column }}</th>
+                            {% endfor %}
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for row in result[1] %}
+                            <tr>
+                                {% for cell in row %}
+                                    <td>{{ cell }}</td>
+                                {% endfor %}
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        {% else %}
+            {% if sql_query and action == 'Execute Query' and not result %}
+                <p class="no-data">No data available.</p>
+            {% endif %}
+        {% endif %}
+    </div>
+
+    <div class="footer">
+        <p>&copy; 2024 SQL Query Generator</p>
+    </div>
+</body>
+
+</html>
