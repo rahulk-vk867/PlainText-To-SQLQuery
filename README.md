@@ -1,6 +1,6 @@
 # PlainText-To-SQLQuery 🤖💾
 
-A Python-based application that leverages Natural Language Processing (NLP) to convert plain English text into functional SQL queries. This project uses a Flask web interface to make database interaction intuitive for non-technical users.
+A Python-based application that leverages Natural Language Processing (NLP) to convert plain English text into functional SQL queries. The application also runs the generated SQL query on the database, provided by the user and displays the resulted rows. This project uses a Flask web interface to make database interaction intuitive for non-technical users.
 
 ## 🚀 Features
 
@@ -45,9 +45,9 @@ Create a file named .env in the project root and add:
 
 ### Configuration for SQL Generator
 API_KEY=your_actual_api_key_here
-DB_CONNECTION_STRING=your_database_path_or_url
-DEBUG=True
-PORT=5000
+
+DATABASE_URL=your_database_path_or_url
+
 
 
 ⚠️ Replace the placeholder values with your actual credentials.
