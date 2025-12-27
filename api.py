@@ -9,7 +9,6 @@ import google.generativeai as genai
 
 # Load spaCy model
 nlp = spacy.load("en_core_web_sm")
-
 # Load environment variables from .env file
 load_dotenv()
 
@@ -86,7 +85,7 @@ def generate_sql_query(natural_language_query):
     try:
         # Validate the input
         if not isinstance(natural_language_query, str) or len(natural_language_query) < 1:
-            return "Invalid input. Please enter a valid natural language query."
+            return "Invalid input.Please enter a valid natural language query."
 
         # Check if table name is mentioned
         table_names = get_table_names()

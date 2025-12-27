@@ -3,7 +3,6 @@ from api import generate_sql_query, execute_sql_query
 import time
 
 app = Flask(__name__)
-
 # Print a startup message
 print("Starting Flask app...")
 @app.route('/', methods=['GET', 'POST'])
