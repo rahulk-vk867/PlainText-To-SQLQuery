@@ -4,11 +4,9 @@ import psycopg2
 from dotenv import load_dotenv
 from functools import lru_cache
 from psycopg2 import pool
-import spacy
 import google.generativeai as genai
 
 # Load spaCy model
-nlp = spacy.load("en_core_web_sm")
 # Load environment variables from .env file
 load_dotenv()
 
@@ -24,13 +22,14 @@ if gemini_api_key is None:
 
 # Create a connection pool
 connection_pool = pool.SimpleConnectionPool(
-    1, 20, 
-    user=" ",
-    password=" ",
-    host=" ",
-    port=" ",
-    database=" "
+    1, 20,
+    user=os.getenv("DB_USER"),
+    password=os.getenv("DB_PASSWORD"),
+    host=os.getenv("DB_HOST"),
+    port=os.getenv("DB_PORT"),
+    database=os.getenv("DB_NAME")
 )
+
 def clean_sql_query(query):
     query = query.replace('```sql', '').replace('```', '').strip()
     return query.strip()
